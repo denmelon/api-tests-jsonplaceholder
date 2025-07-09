@@ -2,19 +2,19 @@
 
 Automated API-tests for [JSONPlaceholder](https://jsonplaceholder.typicode.com) using `pytest` and `requests`.
 
-## 📁 Project structure
+## 📁 Project Structure
 
 ```
 api-tests-jsonplaceholder/
 ├── data/
-│   └── testdata.json          # Test data: IDs and expected status codes
+│   └── testdata.json          # Test data: post IDs and expected status
 ├── reports/
-│   └── report.html            # HTML report with test results
+│   └── report.html            # Generated HTML test report
 ├── tests/
-│   └── test_posts.py          # Tests for GET /posts and GET /posts/{id}
-├── conftest.py                # Fixtures: base_url, JSON data loader
-├── requirements.txt           # Project dependencies
-└── README.md                  # Project documentation
+│   ├── conftest.py            # Fixtures and data loaders
+│   └── test_posts.py          # Test cases: GET /posts
+├── requirements.txt
+└── README.md
 ```
 
 ## ✅ Coverage
@@ -38,16 +38,38 @@ def test_get_single_post(base_url, post_id, expected_status):
         assert data["id"] == post_id
 ```
 
-## 🚀 How to Run
+## ▶️ Running Tests
 
-1. Install dependencies:
+Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Run tests with report:
+Run all tests with an HTML report:
 ```bash
-pytest tests/ --html=reports/report.html --self-contained-html
+pytest --html=reports/report.html
+```
+
+Run only positive test cases:
+```bash
+pytest -m positive --html=reports/positive.html
+```
+
+Run only negative test cases:
+```bash
+pytest -m negative --html=reports/negative.html
+```
+
+## 🏷 Markers
+
+- `@pytest.mark.positive` — Positive test cases (valid post IDs)
+- `@pytest.mark.negative` — Negative test cases (invalid post IDs)
+
+## 🔧 Fixtures
+
+Fixtures are defined in `conftest.py`:
+- `base_url` — the API base URL
+- `load_test_data` — loads test cases from `data/testdata.json`
 ```
 
 ## 🛠 Used Technologies
@@ -57,5 +79,11 @@ pytest tests/ --html=reports/report.html --self-contained-html
 - `pytest-html` — HTML report generator
 
 ---
+
+## 💡 Future Improvements
+
+- Add test cases for POST, PUT, DELETE
+- Integrate with GitHub Actions for CI
+- Add JSON schema validation
 
 📌 Repository: [GitHub — denmelon/api-tests-jsonplaceholder](https://github.com/denmelon/api-tests-jsonplaceholder)
