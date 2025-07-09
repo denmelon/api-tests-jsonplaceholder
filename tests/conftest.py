@@ -1,23 +1,36 @@
-import os
+# import os
+import pytest
 import json
+from pathlib import Path
 
-def load_post_ids():
-    base_dir = os.path.dirname(__file__)  # tests/
-    data_path = os.path.join(base_dir, 'data', 'testdata.json')
+# fixture with session scope to provide the base URL for the API
+@pytest.fixture(scope="session")
+def base_url():
+    return "https://jsonplaceholder.typicode.com"
 
-    if not os.path.exists(data_path):
+# fixture to load post IDs from a JSON file
+def load_test_data():
+    base_dir = Path(__file__).parent  # tests/
+    data_path = base_dir / 'data' / 'testdata.json'
+
+    if not data_path.exists():
         raise FileNotFoundError(f"Data file not found: {data_path}")
 
-    with open(data_path, 'r', encoding='utf-8') as f:
+    with data_path.open('r', encoding='utf-8') as f:
         data = json.load(f)
-        return [item["post_id"] for item in data]
+        return [(item["post_id"], item["expected_status"]) for item in data]
 
 
-    # try:
-    #     with open('post_ids.json', 'r') as file:
-    #         post_ids = json.load(file)
-    #         return post_ids
-    # except FileNotFoundError:
-    #     return []  # Return an empty list if the file does not exist
-    # except json.JSONDecodeError:
-    #     return []  # Return an empty list if the JSON is invalid
+
+
+# def load_post_ids():
+#     base_dir = os.path.dirname(__file__)  # tests/
+#     data_path = os.path.join(base_dir, 'data', 'testdata.json')
+#
+#     if not os.path.exists(data_path):
+#         raise FileNotFoundError(f"Data file not found: {data_path}")
+#
+#     with open(data_path, 'r', encoding='utf-8') as f:
+#         data = json.load(f)
+#         return [item["post_id"] for item in data]
+

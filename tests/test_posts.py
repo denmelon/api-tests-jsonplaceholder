@@ -1,12 +1,12 @@
 import pytest
 import requests
 
-from tests.conftest import load_post_ids
+from tests.conftest import load_test_data
 
 
-def test_get_all_posts():
-    url = "https://jsonplaceholder.typicode.com/posts"
-    response = requests.get(url)
+def test_get_all_posts(base_url):
+    # url = "https://jsonplaceholder.typicode.com/posts"
+    response = requests.get(f"{base_url}/posts")
 
     # Check if the response status code is 200 (OK)
     assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
@@ -24,16 +24,17 @@ def test_get_all_posts():
         assert "body" in post, "Post is missing 'body' field"
 
 
-@pytest.mark.parametrize("post_id", load_post_ids(), ids=lambda val: f"id={val}")
-def test_get_single_post(post_id):
-    url = f"https://jsonplaceholder.typicode.com/posts/{post_id}"
-    response = requests.get(url)
+@pytest.mark.parametrize("post_id, expected_status", load_test_data(), ids=lambda val: f"id={val}")
+def test_get_single_post(base_url, post_id, expected_status):
+    # url = f"https://jsonplaceholder.typicode.com/posts/{post_id}"
+    response = requests.get(f"{base_url}/posts/{post_id}")
 
     # Check if the response status code is 200 (OK)
-    assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
+    assert response.status_code == expected_status, f"Expected status code 200, got {response.status_code}"
 
     # check if the response has the required fields
-    data = response.json()
-    assert data["id"] == post_id, f"Expected post id {post_id}, got {data['id']}"
-    assert "title" in data, "Post is missing 'title' field"
-    assert "body" in data, "Post is missing 'body' field"
+    if expected_status == 200:
+        data = response.json()
+        assert data["id"] == post_id, f"Expected post id {post_id}, got {data['id']}"
+        assert "title" in data, "Post is missing 'title' field"
+        assert "body" in data, "Post is missing 'body' field"

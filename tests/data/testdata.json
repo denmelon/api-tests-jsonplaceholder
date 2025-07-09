@@ -1,5 +1,7 @@
 [
-  { "post_id": 1 },
-  { "post_id": 50 },
-  { "post_id": 100 }
+  { "post_id": 1, "expected_status": 200 },
+  { "post_id": 50, "expected_status": 200 },
+  { "post_id": 100, "expected_status": 200 },
+  { "post_id": 9999, "expected_status": 404 }
 ]
+
