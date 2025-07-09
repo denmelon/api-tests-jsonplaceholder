@@ -3,7 +3,7 @@ import requests
 
 from tests.conftest import load_test_data
 
-
+@pytest.mark.smoke
 def test_get_all_posts(base_url):
     # url = "https://jsonplaceholder.typicode.com/posts"
     response = requests.get(f"{base_url}/posts")
@@ -23,8 +23,11 @@ def test_get_all_posts(base_url):
         assert "title" in post, "Post is missing 'title' field"
         assert "body" in post, "Post is missing 'body' field"
 
+# filter positive cases with status code 200
+positive_test_data = [t for t in load_test_data() if t[1] == 200]
 
-@pytest.mark.parametrize("post_id, expected_status", load_test_data(), ids=lambda val: f"id={val}")
+@pytest.mark.positive
+@pytest.mark.parametrize("post_id, expected_status", positive_test_data, ids=lambda val: f"id={val}")
 def test_get_single_post(base_url, post_id, expected_status):
     # url = f"https://jsonplaceholder.typicode.com/posts/{post_id}"
     response = requests.get(f"{base_url}/posts/{post_id}")
@@ -38,3 +41,13 @@ def test_get_single_post(base_url, post_id, expected_status):
         assert data["id"] == post_id, f"Expected post id {post_id}, got {data['id']}"
         assert "title" in data, "Post is missing 'title' field"
         assert "body" in data, "Post is missing 'body' field"
+
+
+# filter negative cases with status code not 200
+negative_test_data = [t for t in load_test_data() if t[1] != 200]
+
+@pytest.mark.negative
+@pytest.mark.parametrize("post_id, expected_status", negative_test_data, ids=lambda val: f"id={val}")
+def test_get_nonexistent_post(base_url, post_id, expected_status):
+    response = requests.get(f"{base_url}/posts/{post_id}")
+    assert response.status_code == expected_status, f"Expected status code 200, got {response.status_code}"
