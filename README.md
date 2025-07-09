@@ -2,7 +2,7 @@
 
 Automated API-tests for [JSONPlaceholder](https://jsonplaceholder.typicode.com) using `pytest` and `requests`.
 
-## 📁 Структура проекта
+## 📁 Project structure
 
 ```
 api-tests-jsonplaceholder/
@@ -17,7 +17,7 @@ api-tests-jsonplaceholder/
 └── README.md                  # Project documentation
 ```
 
-## ✅ Что покрыто
+## ✅ Coverage
 
 - `GET /posts` — Retrieve all posts
 - `GET /posts/{id}` — Retrieve a single post by ID
