@@ -50,4 +50,4 @@ negative_test_data = [t for t in load_test_data() if t[1] != 200]
 @pytest.mark.parametrize("post_id, expected_status", negative_test_data, ids=lambda val: f"id={val}")
 def test_get_nonexistent_post(base_url, post_id, expected_status):
     response = requests.get(f"{base_url}/posts/{post_id}")
-    assert response.status_code == expected_status, f"Expected status code 200, got {response.status_code}"
+    assert response.status_code == expected_status, f"Expected status code not 200, got {response.status_code}"
