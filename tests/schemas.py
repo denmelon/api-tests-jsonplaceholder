@@ -19,3 +19,15 @@ post_creation_schema = {
     },
     "required": ["title", "body", "userId", "id"]
 }
+
+comment_schema = {
+    "type": "object",
+    "properties": {
+        "postId": {"type": "integer"},
+        "id": {"type": "integer"},
+        "name": {"type": "string"},
+        "email": {"type": "string", "format": "email"},
+        "body": {"type": "string"}
+    },
+    "required": ["postId", "id", "name", "email", "body"]
+}
