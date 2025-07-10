@@ -2,6 +2,7 @@ import pytest
 import requests
 from jsonschema import validate
 from tests.conftest import load_test_data
+from tests.schemas import post_schema
 
 @pytest.mark.smoke
 def test_get_all_posts(base_url):
@@ -26,24 +27,13 @@ def test_get_all_posts(base_url):
 # filter positive cases with status code 200
 positive_test_data = [t for t in load_test_data() if t[1] == 200]
 
-post_schema = {
-    "type": "object",
-    "properties": {
-        "userId": {"type": "integer"},
-        "id": {"type": "integer"},
-        "title": {"type": "string"},
-        "body": {"type": "string"}
-    },
-    "required": ["userId", "id", "title", "body"]
-}
-
 @pytest.mark.positive
 @pytest.mark.parametrize("post_id, expected_status", positive_test_data, ids=lambda val: f"id={val}")
 def test_get_existing_post(base_url, post_id, expected_status):
     response = requests.get(f"{base_url}/posts/{post_id}")
     assert response.status_code == expected_status, f"Expected status code 200, got {response.status_code}"
     data = response.json()
-    validate(instance=data, schema=post_schema)
+    validate(instance=data, schema=post_schema) # validate the response against the schema
     assert data["id"] == post_id, f"Expected post id {post_id}, got {data['id']}"
 
 @pytest.mark.positive

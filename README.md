@@ -71,6 +71,11 @@ Fixtures are defined in `conftest.py`:
 - `base_url` — the API base URL
 - `load_test_data` — loads test cases from `data/testdata.json`
 ```
+## ✅ JSON Schema Validation
+
+Each positive test includes JSON Schema validation using the `jsonschema` library.
+
+Schemas are stored in `tests/schemas.py` and reused across tests to validate structure and required fields in API responses.
 
 ## 🛠 Used Technologies
 
@@ -82,8 +87,8 @@ Fixtures are defined in `conftest.py`:
 
 ## 💡 Future Improvements
 
-- Add test cases for POST, PUT, DELETE
-- Integrate with GitHub Actions for CI
-- Add JSON schema validation
+- Extend coverage to `/comments`, `/users`, etc.
+- Add CI via GitHub Actions
+- Add negative test coverage for POST, PUT, DELETE
 
 📌 Repository: [GitHub — denmelon/api-tests-jsonplaceholder](https://github.com/denmelon/api-tests-jsonplaceholder)
