@@ -70,7 +70,7 @@ pytest -m negative --html=reports/negative.html
 Fixtures are defined in `conftest.py`:
 - `base_url` — the API base URL
 - `load_test_data` — loads test cases from `data/testdata.json`
-```
+
 ## ✅ JSON Schema Validation
 
 Each positive test includes JSON Schema validation using the `jsonschema` library.
