@@ -46,3 +46,10 @@ def test_delete_post(base_url):
     response = requests.delete(f"{base_url}/posts/{post_id}")
     assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
     assert response.json() == {}, f"Expected response is empty, got {response.json()}"
+
+@pytest.mark.negative
+def test_delete_nonexistent_post(base_url):
+    post_id = 9999
+    response = requests.delete(f"{base_url}/posts/{post_id}")
+    assert response.status_code == 200, f"Expected status code 200 (fake API), got {response.status_code}"
+    assert response.json() == {}, f"Expected response is empty, got {response.json()}"
